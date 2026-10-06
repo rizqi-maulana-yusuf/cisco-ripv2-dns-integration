@@ -7,7 +7,8 @@ This project is built to showcase practical skills in network engineering, speci
 ---
 
 ## 🏗️ Network Architecture
-<img width="1113" height="351" alt="{5B2AB00E-CECC-4D75-AC13-046CB7E23ADE}" src="https://github.com/user-attachments/assets/31e55786-7f00-472a-be61-2dc35b691745" />
+<img width="1083" height="352" alt="{6EEC2178-E6E8-45BB-B1E5-E7FCBE71333A}" src="https://github.com/user-attachments/assets/e45f0591-54dc-41d4-bdb4-32f9931642e3" />
+
 
 The infrastructure is segmented into three primary networks connected via a backbone link:
 *   **Site A (Router 4):**
@@ -39,8 +40,8 @@ To simulate a real-world enterprise security policy, a specific traffic filterin
 ## 📝 Configuration Highlights & DNS Setup
 
 ### 1. DNS Server Configuration
-`![DNS Setup](<img width="1176" height="71" alt="{5CB7CEF1-7B7A-4C9F-B073-2446BCD596E8}" src="https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a" />
-)`)*
+![DNS Setup]
+<img width="1176" height="71" alt="{5CB7CEF1-7B7A-4C9F-B073-2446BCD596E8}" src="https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a" />
 
 ![Web Browser]
 <img width="1366" height="651" alt="{7630F389-710B-4759-AA6E-F296C3E66FF7}" src="https://github.com/user-attachments/assets/08ac26c3-9d9e-4346-a515-8cab9d895eb3" />
@@ -65,7 +66,7 @@ To simulate a real-world enterprise security policy, a specific traffic filterin
     Router(config)# access-list 1 deny host 192.168.33.2
     Router(config)# access-list 1 permit any
 
-    ! Apply ACL to Server Interface (Outbound to Server)
+    ! Apply ACL 
     Router(config)# interface gigabitEthernet 0/0
     Router(config-if)# ip access-group 1 in
 
@@ -86,5 +87,7 @@ To ensure network reliability and security compliance, the following verificatio
 
 - [x] **DNS Resolution:** Navigated to the domain name from an authorized PC's web browser; the intranet page loaded successfully.
 - [x] **Routing Verification:** Successfully executed ICMP ping requests between Site A clients (`192.168.33.3`) and Site B clients (`192.167.33.2`).
-- [x] **Security Compliance:** Attempted to ping and access the web server from **PC1**.
+- [x] **Security Compliance:** Attempted to ping and access the web server from **PC0**.
     - **Result:** `Destination Host Unreachable` (Traffic successfully dropped by ACL).
+      <img width="380" height="175" alt="{15D554D1-D222-46F5-A63D-3BDF66D67C57}" src="https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88" />
+
