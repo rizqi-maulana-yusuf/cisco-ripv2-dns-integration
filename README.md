@@ -92,3 +92,13 @@ To ensure network reliability and security compliance, the following verificatio
     - **Result:** `Destination Host Unreachable` (Traffic successfully dropped by ACL).
       <img width="380" height="175" alt="{15D554D1-D222-46F5-A63D-3BDF66D67C57}" src="https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88" />
 
+
+## 🔍 Command Line Explanations
+
+Here is a simple breakdown of the commands used in this project:
+
+*   **`version 2`**: Turns on RIP version 2. We use this instead of version 1 because it supports subnetting (VLSM), which is a standard requirement for modern networks.
+*   **`no auto-summary`**: Stops the router from grouping IP networks automatically. This makes sure the router reads the exact subnet mask (like `/24`) correctly without messing up the routing paths.
+*   **`access-list 1 deny host 192.168.33.2`**: Creates a Standard ACL (ID 1) to block traffic specifically from one exact device, which is the untrusted PC1.
+*   **`access-list 1 permit any`**: This is a very important rule. By default, Cisco routers silently block everything at the end of an ACL. We add `permit any` so that all other normal PCs can still access the network.
+*   **`ip access-group 1 in`**: Applies the ACL rule to the router's interface for incoming traffic (`in`). This means the router drops PC1's traffic right when it enters the port, saving the router's time and memory.
