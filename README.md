@@ -44,7 +44,8 @@ To simulate a real-world enterprise security policy, a specific traffic filterin
 <img width="1176" height="71" alt="{5CB7CEF1-7B7A-4C9F-B073-2446BCD596E8}" src="https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a" />
 
 ![Web Browser]
-<img width="1366" height="651" alt="{7630F389-710B-4759-AA6E-F296C3E66FF7}" src="https://github.com/user-attachments/assets/08ac26c3-9d9e-4346-a515-8cab9d895eb3" />
+<img width="1307" height="676" alt="{C625A347-43DA-4FF7-9219-9CBBC440538C}" src="https://github.com/user-attachments/assets/a6914774-903f-4190-889f-faa63e2aa4f4" />
+
 
 
 *   **Server IP Address:** `192.166.33.2`
