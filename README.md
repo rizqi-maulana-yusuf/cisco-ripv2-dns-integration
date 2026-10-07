@@ -8,7 +8,8 @@ This project showcases practical network engineering skills, specifically focusi
 
 ## 🏗️ Network Architecture & Topology
 
-<img width="1083" height="352" alt="Network Topology" src="[https://github.com/user-attachments/assets/e45f0591-54dc-41d4-bdb4-32f9931642e3](https://github.com/user-attachments/assets/e45f0591-54dc-41d4-bdb4-32f9931642e3)" />
+<img width="1128" height="357" alt="{4C38BC09-3F65-4470-957A-AE3AAC5D7024}" src="https://github.com/user-attachments/assets/9977e6d6-8f11-4ed0-99c8-06e18ee96d64" />
+
 
 The infrastructure is segmented into three primary areas connected via a high-speed backbone link. 
 
@@ -87,15 +88,17 @@ The following verifications were conducted to ensure network reliability and sec
 ### ✅ Scenario 1: Authorized Access & DNS Resolution
 An authorized client successfully queried the DNS server and accessed the intranet web portal (`qyv.com`).
 
-<img width="1176" height="71" alt="DNS Setup" src="[https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a](https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a)" />
+<img width="1166" height="64" alt="{D8FB597E-3BA6-43AA-BBF4-AC9A5D3554BB}" src="https://github.com/user-attachments/assets/60f0d4ae-e974-4240-aa4f-882192cff4dd" />
 
-<img width="1307" height="676" alt="Web Browser Verification" src="[https://github.com/user-attachments/assets/a6914774-903f-4190-889f-faa63e2aa4f4](https://github.com/user-attachments/assets/a6914774-903f-4190-889f-faa63e2aa4f4)" />
+### Web Browser
+
+<img width="516" height="211" alt="{3AE036AA-77E9-4989-9B9E-00680040EB14}" src="https://github.com/user-attachments/assets/3e108d49-88d8-4f89-a77e-2c91497aff89" />
+
 
 ### ❌ Scenario 2: Security Compliance (ACL Block)
 The restricted endpoint (**PC0**) attempted to access the web server. 
 *   **Result:** The router successfully dropped the traffic. The browser returned a **"Host Name Unresolved"** error, confirming the inbound ACL is functioning as intended.
 
-<img width="380" height="175" alt="ACL Block Verification" src="[https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88](https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88)" />
 
 ---
 
