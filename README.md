@@ -1,104 +1,106 @@
 # 🛡️ Secure Enterprise Network: RIPv2, ACL, and DNS Implementation
 
-> A comprehensive network infrastructure simulation demonstrating dynamic routing, traffic filtering policies, and local domain resolution using Cisco Packet Tracer. 
+> An enterprise-grade network infrastructure simulation demonstrating dynamic routing, traffic filtering policies, and local domain resolution using Cisco Packet Tracer. 
 
-This project is built to showcase practical skills in network engineering, specifically focusing on secure inter-VLAN/subnet communication and server access management.
+This project showcases practical network engineering skills, specifically focusing on secure inter-site communication, endpoint isolation, and centralized server management.
 
 ---
 
-## 🏗️ Network Architecture
-<img width="1083" height="352" alt="{6EEC2178-E6E8-45BB-B1E5-E7FCBE71333A}" src="https://github.com/user-attachments/assets/e45f0591-54dc-41d4-bdb4-32f9931642e3" />
+## 🏗️ Network Architecture & Topology
 
+<img width="1083" height="352" alt="Network Topology" src="[https://github.com/user-attachments/assets/e45f0591-54dc-41d4-bdb4-32f9931642e3](https://github.com/user-attachments/assets/e45f0591-54dc-41d4-bdb4-32f9931642e3)" />
 
-The infrastructure is segmented into three primary networks connected via a backbone link:
-*   **Site A (Router 4):**
-    *   **Client Network:** `192.168.33.0/24` (Gateway: `192.168.33.1`)
-    *   **Data Center / Server Network:** `192.166.33.0/24` (Gateway: `192.166.33.1`)
-*   **Site B (Router 5):**
-    *   **Client Network:** `192.167.33.0/24` (Gateway: `192.167.33.1`)
-*   **Core Backbone:** `199.166.33.0/30` connecting Site A and Site B.
+The infrastructure is segmented into three primary areas connected via a high-speed backbone link. 
+
+### IP Addressing Table
+| Location | Network / Subnet | Default Gateway | Purpose / Role |
+| :--- | :--- | :--- | :--- |
+| **Site A** | `192.168.33.0/24` | `192.168.33.1` | Employee Client Network |
+| **Site A** | `192.166.33.0/24` | `192.166.33.1` | Data Center / Server Farm |
+| **Site B** | `192.167.33.0/24` | `192.167.33.1` | Remote Branch Client Network |
+| **Core** | `199.166.33.0/30` | N/A | Point-to-Point Backbone Link |
+
+---
+
+## 🚀 How to Run This Lab
+
+To test the configurations and explore the topology:
+1. Ensure you have **Cisco Packet Tracer** installed (Version 8.0 or newer recommended).
+2. Download the `.pkt` file included in this repository.
+3. Open the file and wait for the STP (Spanning Tree Protocol) ports to converge (turn green).
+4. Follow the **Validation & Testing Procedures** below to verify connectivity and security policies.
 
 ---
 
 ## ⚙ Core Technologies & Services
 
-1.  **Dynamic Routing (RIPv2):** Implemented across all routers to establish end-to-end connectivity without manual static route interventions. Auto-summary is disabled to support classless subnetting.
-2.  **Access Control List (ACL):** Security policies enforced at the router interface level to restrict specific unauthorized hosts from accessing critical network resources.
-3.  **DNS & Web Services:** A centralized server is configured to host the intranet web portal and resolve the local domain name, allowing clients to access services via a standard URL rather than raw IP addresses.
+1. **Dynamic Routing (RIPv2):** Implemented across all distribution routers to establish end-to-end connectivity dynamically. Auto-summary is disabled to support Variable Length Subnet Masking (VLSM).
+2. **Access Control List (ACL):** Standard security policies enforced at the router interface level to restrict unauthorized hosts from accessing critical server resources.
+3. **DNS & Web Services:** A centralized server (`192.166.33.2`) is configured to host the intranet web portal and resolve the local domain name (`qyv.com`), allowing clients to access services via standard URLs.
 
 ---
 
-## 🎯 Security Policy Implementation (ACL)
+## 📝 Configuration Highlights
 
-To simulate a real-world enterprise security policy, a specific traffic filtering rule is applied to isolate an unauthorized endpoint:
-*   🔴 **Restricted Host (PC1):** `192.168.33.2` (Site A)
+### 1. Site A (Router 4) - Routing & Security
+This router handles local traffic, connects to the backbone, and filters unauthorized traffic (PC0: `192.168.33.2`) from entering the core network.
 
-**Policy Objective:** This specific host is explicitly **denied** access to the Server farm (`192.166.33.0/24`), while all other authenticated client PCs on the network (including Site B clients) retain full communication privileges.
+```text
+! Enable RIPv2 Routing
+Router(config)# router rip
+Router(config-router)# version 2
+Router(config-router)# network 192.168.33.0
+Router(config-router)# network 192.166.33.0
+Router(config-router)# network 199.166.33.0
+Router(config-router)# no auto-summary
 
----
+! Configure Standard ACL to Isolate PC0
+Router(config)# access-list 1 deny host 192.168.33.2
+Router(config)# access-list 1 permit any
 
-## 📝 Configuration Highlights & DNS Setup
+! Apply ACL Inbound on Client Gateway Interface
+Router(config)# interface gigabitEthernet 0/1
+Router(config-if)# ip access-group 1 in
+```
 
-### 1. DNS Server Configuration
-![DNS Setup]
-<img width="1176" height="71" alt="{5CB7CEF1-7B7A-4C9F-B073-2446BCD596E8}" src="https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a" />
+### 2. Site B (Router 5) - Routing
+```text
+! Enable RIPv2 Routing
+Router(config)# router rip
+Router(config-router)# version 2
+Router(config-router)# network 192.167.33.0
+Router(config-router)# network 199.166.33.0
+Router(config-router)# no auto-summary
+```
 
-![Web Browser]
-<img width="1307" height="676" alt="{C625A347-43DA-4FF7-9219-9CBBC440538C}" src="https://github.com/user-attachments/assets/a6914774-903f-4190-889f-faa63e2aa4f4" />
-
-
-
-*   **Server IP Address:** `192.166.33.2`
-*   **DNS Service:** ON
-*   **A-Record:** `qyv.com` ➔ `192.166.33.2`
-*   *Note: All endpoint devices are configured to use `192.166.33.2` as their primary DNS server.*
-
-### 2. Router 4 (Site A) Configuration
-
-    ! Routing RIPv2
-    Router(config)# router rip
-    Router(config-router)# version 2
-    Router(config-router)# network 192.168.33.0
-    Router(config-router)# network 192.166.33.0
-    Router(config-router)# network 199.166.33.0
-    Router(config-router)# no auto-summary
-
-    ! ACL to Block PC1 from accessing Server Network
-    Router(config)# access-list 1 deny host 192.168.33.2
-    Router(config)# access-list 1 permit any
-
-    ! Apply ACL 
-    Router(config)# interface gigabitEthernet 0/0
-    Router(config-if)# ip access-group 1 in
-
-### 3. Router 5 (Site B) Configuration
-
-    ! Routing RIPv2
-    Router(config)# router rip
-    Router(config-router)# version 2
-    Router(config-router)# network 192.167.33.0
-    Router(config-router)# network 199.166.33.0
-    Router(config-router)# no auto-summary
+### 3. Command Line Analysis
+*   **`no auto-summary`**: Prevents the router from summarizing routes to classful boundaries, ensuring accurate routing tables when using custom subnet masks.
+*   **`access-list 1 permit any`**: Explicitly allows all other traffic. Without this, Cisco's *implicit deny* rule would drop all packets traversing the interface.
+*   **`ip access-group 1 in`**: Applies the filtering rule immediately as the packet enters the interface, saving router CPU cycles compared to outbound filtering.
 
 ---
 
 ## 🧪 Validation & Testing Procedures
 
-To ensure network reliability and security compliance, the following verification tests were conducted:
+The following verifications were conducted to ensure network reliability and security compliance:
 
-- [x] **DNS Resolution:** Navigated to the domain name from an authorized PC's web browser; the intranet page loaded successfully.
-- [x] **Routing Verification:** Successfully executed ICMP ping requests between Site A clients (`192.168.33.3`) and Site B clients (`192.167.33.2`).
-- [x] **Security Compliance:** Attempted to ping and access the web server from **PC0**.
-    - **Result:** `Destination Host Unreachable` (Traffic successfully dropped by ACL).
-      <img width="380" height="175" alt="{15D554D1-D222-46F5-A63D-3BDF66D67C57}" src="https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88" />
+### ✅ Scenario 1: Authorized Access & DNS Resolution
+An authorized client successfully queried the DNS server and accessed the intranet web portal (`qyv.com`).
 
+<img width="1176" height="71" alt="DNS Setup" src="[https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a](https://github.com/user-attachments/assets/00b2bf59-17fe-4c9b-b9fc-eae2286b253a)" />
 
-## 🔍 Command Line Explanations
+<img width="1307" height="676" alt="Web Browser Verification" src="[https://github.com/user-attachments/assets/a6914774-903f-4190-889f-faa63e2aa4f4](https://github.com/user-attachments/assets/a6914774-903f-4190-889f-faa63e2aa4f4)" />
 
-Here is a simple breakdown of the commands used in this project:
+### ❌ Scenario 2: Security Compliance (ACL Block)
+The restricted endpoint (**PC0**) attempted to access the web server. 
+*   **Result:** The router successfully dropped the traffic. The browser returned a **"Host Name Unresolved"** error, confirming the inbound ACL is functioning as intended.
 
-*   **`version 2`**: Turns on RIP version 2. We use this instead of version 1 because it supports subnetting (VLSM), which is a standard requirement for modern networks.
-*   **`no auto-summary`**: Stops the router from grouping IP networks automatically. This makes sure the router reads the exact subnet mask (like `/24`) correctly without messing up the routing paths.
-*   **`access-list 1 deny host 192.168.33.2`**: Creates a Standard ACL (ID 1) to block traffic specifically from one exact device, which is the untrusted PC1.
-*   **`access-list 1 permit any`**: This is a very important rule. By default, Cisco routers silently block everything at the end of an ACL. We add `permit any` so that all other normal PCs can still access the network.
-*   **`ip access-group 1 in`**: Applies the ACL rule to the router's interface for incoming traffic (`in`). This means the router drops PC1's traffic right when it enters the port, saving the router's time and memory.
+<img width="380" height="175" alt="ACL Block Verification" src="[https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88](https://github.com/user-attachments/assets/e77edb42-0871-4517-ac94-782968ab5d88)" />
+
+---
+
+## 💡 Lessons Learned & Troubleshooting
+
+During the implementation of this project, I encountered and resolved several architectural challenges:
+* **ACL Placement Strategy:** Initially, placing the ACL close to the destination (Server) caused unnecessary backbone traffic. By applying the Standard ACL directly at the source interface (`GigabitEthernet 0/1` on Router 4), bandwidth efficiency across the Core link was significantly improved.
+* **DNS Resolution Issues:** DNS queries were failing until all client PCs were properly updated to point to `192.166.33.2` as their primary DNS server, reinforcing the importance of proper DHCP/Static IP configuration management.
